@@ -230,18 +230,17 @@
 <body>
 
 <nav>
-  <div class="logo">arte<b>web</b></div>
+  <a href="#inicio" class="logo" id="logoTop" style="cursor:pointer;">arte<b>web</b></a>
   <div class="nav-links">
     <a href="#estudio">Estudio</a>
     <a href="#servicios">Servicios</a>
-    <a href="#metodo">Método</a>
     <a href="#equipo">Equipo</a>
     <a href="#contacto">Contacto</a>
   </div>
 </nav>
 
 <canvas id="scene"></canvas>
-<header class="hero">
+<header class="hero" id="inicio">
   <p class="hero-eyebrow">Estudio de diseño y desarrollo web</p>
   <h1>
     <span class="l">Damos forma</span>
@@ -279,19 +278,6 @@
       <div class="work-row reveal"><div class="work-num">04</div><div class="work-name">Tiendas online</div><div class="work-desc">E-commerce completo, con pagos seguros y una experiencia que vende.</div></div>
       <div class="work-row reveal"><div class="work-num">05</div><div class="work-name">Mantenimiento</div><div class="work-desc">Seguridad, copias, actualizaciones y soporte continuo. Tu web siempre al día.</div></div>
       <div class="work-row reveal"><div class="work-num">06</div><div class="work-name">SEO & visibilidad</div><div class="work-desc">Para que te encuentren primero. Más tráfico, más clientes, mejores resultados.</div></div>
-    </div>
-  </div>
-</section>
-
-<section class="block approach" id="metodo">
-  <div class="wrap">
-    <p class="label">Método</p>
-    <h2 class="heading reveal">Un proceso claro,<br>sin sorpresas.</h2>
-    <div class="steps">
-      <div class="step"><div class="n">01</div><h3>Escuchamos</h3><p>Entendemos tu negocio, tus objetivos y a quién quieres llegar.</p></div>
-      <div class="step"><div class="n">02</div><h3>Diseñamos</h3><p>Damos forma a la idea con propuestas visuales hasta dar en el clavo.</p></div>
-      <div class="step"><div class="n">03</div><h3>Construimos</h3><p>Convertimos el diseño en una web real, rápida y a prueba de futuro.</p></div>
-      <div class="step"><div class="n">04</div><h3>Cuidamos</h3><p>Lanzamos y seguimos a tu lado con mantenimiento y mejoras continuas.</p></div>
     </div>
   </div>
 </section>
@@ -467,6 +453,13 @@ function toggleUp(){
 }
 window.addEventListener('scroll', toggleUp);
 toggleUp();
+
+// ───── Logo: volver al inicio ─────
+document.getElementById('logoTop').addEventListener('click', (e)=>{
+  e.preventDefault();
+  window.scrollTo({ top:0, behavior:'smooth' });
+  playFlash();
+});
 </script>
 </body>
 </html>
