@@ -135,22 +135,40 @@
   .approach .label{ color:var(--clay); }
   .approach .heading{ color:var(--paper); }
   .steps{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:0; margin-top:4rem;
-    border-top:1px solid rgba(244,242,237,0.15); }
-  .step{ padding:2.5rem 1.8rem 2.5rem 0; border-right:1px solid rgba(244,242,237,0.12); }
+    border-top:1px solid rgba(244,242,237,0.2); }
+  .step{ padding:2.5rem 1.8rem 2.5rem 0; border-right:1px solid rgba(244,242,237,0.15); }
   .step:last-child{ border-right:none; }
   .step .n{ font-family:'Fraunces',serif; font-size:2.4rem; font-weight:300; color:var(--clay); line-height:1; }
-  .step h3{ font-family:'Fraunces',serif; font-weight:400; font-size:1.3rem; margin:1rem 0 .6rem; }
-  .step p{ font-size:0.85rem; line-height:1.65; color:rgba(244,242,237,0.6); }
+  .step h3{ font-family:'Fraunces',serif; font-weight:400; font-size:1.3rem; margin:1rem 0 .6rem; color:var(--paper); }
+  .step p{ font-size:0.9rem; line-height:1.65; color:rgba(244,242,237,0.8); }
   .team{ padding:7rem 0; border-top:1px solid var(--line); }
   .team-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:2.5rem; margin-top:3.5rem; }
   .member .dot{ width:100%; aspect-ratio:1; border-radius:50%;
     background: radial-gradient(circle at 35% 30%, #e0664a, var(--clay) 60%, #a83a1f);
-    margin-bottom:1.2rem; position:relative; overflow:hidden; }
-  .member:nth-child(2) .dot{ background: radial-gradient(circle at 35% 30%, #7a8a6e, var(--sage) 60%, #3f4a39); }
-  .member:nth-child(3) .dot{ background: radial-gradient(circle at 35% 30%, #2c2a24, var(--ink) 60%, #000); }
-  .member:nth-child(4) .dot{ background: radial-gradient(circle at 35% 30%, #e8c07a, #c89a4e 60%, #9a7530); }
+    margin-bottom:1.2rem; position:relative; overflow:hidden; cursor:pointer;
+    transition: transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .5s ease;
+    background-size: 160% 160%; background-position: 30% 30%; }
+  .member:nth-child(2) .dot{ background: radial-gradient(circle at 35% 30%, #7a8a6e, var(--sage) 60%, #3f4a39); background-size:160% 160%; background-position:30% 30%; }
+  .member:nth-child(3) .dot{ background: radial-gradient(circle at 35% 30%, #2c2a24, var(--ink) 60%, #000); background-size:160% 160%; background-position:30% 30%; }
+  .member:nth-child(4) .dot{ background: radial-gradient(circle at 35% 30%, #e8c07a, #c89a4e 60%, #9a7530); background-size:160% 160%; background-position:30% 30%; }
+  /* hover: el círculo crece, gira la luz y aparece un brillo */
+  .member .dot:hover{ transform: scale(1.07) rotate(-4deg);
+    box-shadow: 0 20px 50px -12px rgba(212,80,46,0.45); animation: gradShift 3s ease infinite; }
+  .member:nth-child(2) .dot:hover{ box-shadow:0 20px 50px -12px rgba(92,107,84,0.45); }
+  .member:nth-child(3) .dot:hover{ box-shadow:0 20px 50px -12px rgba(26,24,20,0.5); }
+  .member:nth-child(4) .dot:hover{ box-shadow:0 20px 50px -12px rgba(200,154,78,0.45); }
+  @keyframes gradShift{
+    0%{ background-position:30% 30%; } 50%{ background-position:70% 65%; } 100%{ background-position:30% 30%; }
+  }
+  /* destello que cruza el círculo al pasar por encima */
+  .member .dot::after{ content:''; position:absolute; inset:0;
+    background:linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
+    transform:translateX(-120%); transition:transform .7s ease; }
+  .member .dot:hover::after{ transform:translateX(120%); }
   .member .dot span{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-    font-family:'Fraunces',serif; font-size:2.5rem; color:rgba(255,255,255,0.85); font-style:italic; }
+    font-family:'Fraunces',serif; font-size:2.5rem; color:rgba(255,255,255,0.85); font-style:italic;
+    transition: transform .5s cubic-bezier(.2,.8,.2,1); z-index:1; }
+  .member .dot:hover span{ transform: scale(1.15) rotate(4deg); }
   .member h3{ font-family:'Fraunces',serif; font-weight:400; font-size:1.35rem; }
   .member .role{ font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--clay); margin:.3rem 0 .7rem; }
   .member p{ font-size:0.84rem; line-height:1.6; color:rgba(26,24,20,0.6); }
@@ -175,6 +193,30 @@
   footer p{ font-size:0.78rem; color:rgba(26,24,20,0.5); }
   .reveal{ opacity:0; transform:translateY(28px); transition:opacity .9s ease, transform .9s ease; }
   .reveal.show{ opacity:1; transform:translateY(0); }
+
+  /* Flechas flotantes subir / bajar */
+  .nav-arrows{ position:fixed; right:1.6rem; bottom:1.6rem; z-index:60;
+    display:flex; flex-direction:column; gap:.7rem; }
+  .arrow-btn{ width:48px; height:48px; border-radius:50%; border:1px solid var(--line);
+    background:var(--paper); color:var(--ink); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 24px -10px rgba(26,24,20,0.35);
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), background .3s, color .3s, opacity .4s; }
+  .arrow-btn svg{ width:20px; height:20px; transition: transform .35s ease; }
+  .arrow-btn:hover{ background:var(--clay); color:#fff; border-color:var(--clay); transform:translateY(-3px); }
+  .arrow-btn.up{ opacity:0; pointer-events:none; transform:translateY(10px); }
+  .arrow-btn.up.visible{ opacity:1; pointer-events:auto; transform:translateY(0); }
+  /* animación al pulsar */
+  .arrow-btn.bounce-down svg{ animation: bounceDown .5s ease; }
+  .arrow-btn.bounce-up svg{ animation: bounceUp .5s ease; }
+  @keyframes bounceDown{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
+  @keyframes bounceUp{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+  /* destello suave en toda la página al navegar */
+  .page-flash{ position:fixed; inset:0; z-index:9999; pointer-events:none;
+    background:var(--clay); opacity:0; }
+  .page-flash.go{ animation: flash .6s ease; }
+  @keyframes flash{ 0%{opacity:0} 25%{opacity:0.08} 100%{opacity:0} }
+  @media(max-width:760px){ .nav-arrows{ right:1rem; bottom:1rem; } .arrow-btn{ width:44px; height:44px; } }
   @media(max-width:760px){
     nav{ padding:1.2rem 1.5rem; } .nav-links{ display:none; }
     .hero{ padding:0 1.5rem; } .hero-foot{ left:1.5rem; right:1.5rem; flex-direction:column; align-items:flex-start; gap:1.5rem; }
@@ -246,10 +288,10 @@
     <p class="label">Método</p>
     <h2 class="heading reveal">Un proceso claro,<br>sin sorpresas.</h2>
     <div class="steps">
-      <div class="step reveal"><div class="n">01</div><h3>Escuchamos</h3><p>Entendemos tu negocio, tus objetivos y a quién quieres llegar.</p></div>
-      <div class="step reveal"><div class="n">02</div><h3>Diseñamos</h3><p>Damos forma a la idea con propuestas visuales hasta dar en el clavo.</p></div>
-      <div class="step reveal"><div class="n">03</div><h3>Construimos</h3><p>Convertimos el diseño en una web real, rápida y a prueba de futuro.</p></div>
-      <div class="step reveal"><div class="n">04</div><h3>Cuidamos</h3><p>Lanzamos y seguimos a tu lado con mantenimiento y mejoras continuas.</p></div>
+      <div class="step"><div class="n">01</div><h3>Escuchamos</h3><p>Entendemos tu negocio, tus objetivos y a quién quieres llegar.</p></div>
+      <div class="step"><div class="n">02</div><h3>Diseñamos</h3><p>Damos forma a la idea con propuestas visuales hasta dar en el clavo.</p></div>
+      <div class="step"><div class="n">03</div><h3>Construimos</h3><p>Convertimos el diseño en una web real, rápida y a prueba de futuro.</p></div>
+      <div class="step"><div class="n">04</div><h3>Cuidamos</h3><p>Lanzamos y seguimos a tu lado con mantenimiento y mejoras continuas.</p></div>
     </div>
   </div>
 </section>
@@ -274,7 +316,7 @@
     <a href="mailto:hola@arteweb.es" class="btn reveal">Cuéntanos tu proyecto</a>
     <div class="cta-info reveal">
       <a href="mailto:hola@arteweb.es">hola@arteweb.es</a>
-      <a href="tel:+34600000000">+34 600 000 000</a>
+      <a href="tel:+34691342480">691 342 480</a>
       <span style="color:rgba(26,24,20,0.5);font-size:0.92rem">España · Lun–Vie</span>
     </div>
   </div>
@@ -285,6 +327,17 @@
   <p>Estudio de diseño y desarrollo web</p>
   <p>© 2025 ARTEweb</p>
 </footer>
+
+<!-- Flechas de navegación -->
+<div class="nav-arrows">
+  <button class="arrow-btn up" id="arrowUp" aria-label="Subir">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+  <button class="arrow-btn down" id="arrowDown" aria-label="Bajar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </button>
+</div>
+<div class="page-flash" id="pageFlash"></div>
 
 <script>
 const canvas = document.getElementById('scene');
@@ -378,6 +431,42 @@ const io=new IntersectionObserver(es=>{
   es.forEach((e,i)=>{ if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('show'), i*70); } });
 },{threshold:0.14});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// ───── Flechas subir / bajar ─────
+const sections = Array.from(document.querySelectorAll('header.hero, section.block, footer'));
+const arrowUp = document.getElementById('arrowUp');
+const arrowDown = document.getElementById('arrowDown');
+const flash = document.getElementById('pageFlash');
+
+function currentIndex(){
+  const y = window.scrollY + window.innerHeight*0.35;
+  let idx = 0;
+  sections.forEach((s,i)=>{ if(s.offsetTop <= y) idx = i; });
+  return idx;
+}
+function playFlash(){
+  flash.classList.remove('go'); void flash.offsetWidth; flash.classList.add('go');
+}
+function goTo(i){
+  i = Math.max(0, Math.min(sections.length-1, i));
+  sections[i].scrollIntoView({ behavior:'smooth' });
+  playFlash();
+}
+arrowDown.addEventListener('click', ()=>{
+  goTo(currentIndex()+1);
+  arrowDown.classList.remove('bounce-down'); void arrowDown.offsetWidth; arrowDown.classList.add('bounce-down');
+});
+arrowUp.addEventListener('click', ()=>{
+  goTo(currentIndex()-1);
+  arrowUp.classList.remove('bounce-up'); void arrowUp.offsetWidth; arrowUp.classList.add('bounce-up');
+});
+// mostrar flecha de subir solo tras bajar un poco
+function toggleUp(){
+  if(window.scrollY > window.innerHeight*0.6) arrowUp.classList.add('visible');
+  else arrowUp.classList.remove('visible');
+}
+window.addEventListener('scroll', toggleUp);
+toggleUp();
 </script>
 </body>
 </html>
